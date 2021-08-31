@@ -1,0 +1,5 @@
+lib
+*.xml
+*.html
+*.txt
+.vscode
