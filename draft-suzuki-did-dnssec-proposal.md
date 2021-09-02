@@ -87,6 +87,8 @@ Note: The author of this proposal demonstrated the use of DNSSEC Resource Record
 - `did-dnssec-resolver` implementation
   - Includes example application code
 
+Note: the author of this proposal has a implementation of the first two libraries in C++ which used for the experiment of [@PKBADHOC], and currently actively translating (and refactoring) the code as libraries in TypeScript language.
+
 # Security Considerations
 
 To be discussed
