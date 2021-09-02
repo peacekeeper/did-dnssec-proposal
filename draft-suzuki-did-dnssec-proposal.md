@@ -20,7 +20,7 @@ toc = "yes"
 initials = "S."
 surname = "Suzuki"
 fullname = "Shigeya Suzuki"
-organization = "Graduate School of Media and Governance, Keio University"
+organization = "Keio University"
   [author.address]
    email = "shigeya@wide.ad.jp"
 
@@ -73,7 +73,7 @@ Note: The author of this proposal demonstrated the use of DNSSEC Resource Record
 - Implement `did:dnssec` DID document verification library
 - Implement `did:dnssec` resolver
 
-Note: the author of this proposal has implemented the part of library code in C++, which is the part of the iOS application code prepared for the experiment of [@PKB-ADHOC]. The author is currently actively translating (and refactoring) the code as libraries in TypeScript language.
+Note: the author of this proposal has implemented the part of library code in C++, which is the part of the iOS application code prepared for the experiment of [@PKB-ADHOC]. The author is currently actively translating (and also refactor at the same time) the code as libraries in TypeScript language.
 
 # Deliverables
 
@@ -88,7 +88,7 @@ Note: the author of this proposal has implemented the part of library code in C+
   - Includes DNS resolver stub library using TCP for Web Browser
 - DNSSEC Resource Record handling library
   - Includes DNSSEC Resource Record signing and verification library
-- `did-dnssec-resolver` implementation
+- DNSSEC DID Resolver implementation (`did-dnssec-resolver`)
   - Includes example application code
 
 # Security Considerations
