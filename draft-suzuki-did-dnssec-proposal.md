@@ -4,13 +4,13 @@ abbrev = "did-dnssec-proposal"
 docName = "draft-suzuki-did-dnssec-proposal-latest"
 category = "info"
 ipr = "none"
-workgroup="proposal"
+workgroup="Proposal"
 keyword = ["did", "dns", "dnssec", "verifiable data registry"]
 
 [seriesInfo]
 name = "Internet-Draft"
 value = "draft-suzuki-did-dnssec-proposal"
-status = "standard"
+status = "informational"
 
 [pi]
 toc = "yes"
@@ -27,25 +27,25 @@ organization = "Graduate School of Media and Governance, Keio University"
 
 .# Abstract
 
-In this document, we proposes a new DID method, `did:dnssec`, which using DNSSEC Resources Records as the basis for its Verifiable Data Registry. This document also describe the expected activities relates the design and implementation of the DID method.
+This document proposes a new DID method, `did:dnssec`, which uses DNSSEC Resources Records as the basis for its Verifiable Data Registry. This document also describes the expected activities relates to the design and implementation of the DID method.
 
 {mainmatter}
 
 # Introduction
 
-Decentralized Identifier (DID) is a technology for implementing verifiable namespaces in a decentralized manner. It can be implemented in a way that eliminates dependence on other entities, also able to materialize a Self-Sovereign Identity (SSI). By applying blockchain technology, fully decentralized identity is implementable. Because of its  decentralization focusing design, there is a clear distinction from the centralized or hierarchical control delegation mechanisms often used in the current Internet.
+Decentralized Identifier (DID) is a technology for implementing verifiable namespaces in a decentralized manner. It can be implemented in a way that eliminates dependence on other entities, also able to materialize a Self-Sovereign Identity (SSI). By applying blockchain technology, a fully decentralized identity is implementable. Because of its decentralization focusing design, there is a clear distinction from the centralized or hierarchical control delegation mechanisms often used in the current Internet.
 
 While it is expected that the decentralized design will be widely applied in the future, deploying DID applications often requires dependence on existing distributed systems such as Domain Name Systems (DNS). For example, Methods such as `did:web` that depend on DNS have been proposed. Also, some DID method implementation indirectly depends on DNS, i.e., to reach the service described in DID documents as service endpoints.
 
-The new `did:dnssec` method uses DNS Resource Records (DNS RRs) and DNSSEC Resource Records (DNSSEC RRs) as a Verifiable Data Registry (VDR) to eliminate the gap between the existing Internet world and the new DID world (DNSSEC VDR hereafter). Using DNS RRs and DNSSEC RRs as a VDR and applying the signature verification mechanism in DNSSEC to establish the chain of trust of a Fully Qualified Domain Name (FQDN) through multiple DNS zones. By using locally verified FQDN to RR mapping, we can eliminate external entity dependencies in DID documents such as DNS resolver dependency in `did:web`.
+The new `did:dnssec` method uses DNS Resource Records (DNS RRs) and DNSSEC Resource Records (DNSSEC RRs) as a Verifiable Data Registry (VDR) to eliminate the gap between the existing Internet world, and the new DID world (DNSSEC VDR hereafter). Using DNS RRs and DNSSEC RRs as a VDR and applying the signature verification mechanism in DNSSEC enable establishing the chain of trust of a Fully Qualified Domain Name (FQDN) through multiple DNS zones. Using locally verified FQDN to RR mapping can eliminate external entity dependencies in DID documents such as DNS resolver dependency in `did:web`.
 
-Access to the DNSSEC VDR is possible via currently available DNS transport mechanisms. Nowadays, since browsers can reach DNS Servers via TCP, whole process including fetching RRs and verifying the RRset may complete in a browser. Also, since the DNSSEC VDR only depends on already deployed DNS servers, there are numerous advantages over blockchain-based VDR implementations, such as extremely high availability, a wide range of implementation, a long list of experienced operators, rich operational experiences, and so on.
+Access to the DNSSEC VDR is possible via currently available DNS transport mechanisms. Nowadays, since browsers can reach DNS Servers via TCP, the whole process, including fetching RRs and verifying the RRset, may complete in a browser. Also, since the DNSSEC VDR only depends on already deployed DNS servers, there are numerous advantages over blockchain-based VDR implementations, such as: extremely high availability, a wide range of implementation, a long list of experienced operators, rich operational experiences, and so on.
 
-Furthermore, since DNSSEC is designed to work without transport security, successful validation is guaranteed as long as the necessary RR sets are available at the validation stage. It is possible to mix set of RRs retrieved from multiple serves for a validation process. The DID document of `did:dnssec` consists of a RR set required to verify subject RR, which is a typed value resolved from FQDN. The DID document is fully verifiable by following the chain of trust starting from DNS root zone public keys, which are statically preconfigured as the trust anchor in the verification library, which is common among typical DNS resolver implementations.
+Furthermore, since DNSSEC is designed to work without transport security, successful validation is guaranteed as long as the necessary RR sets are available at the validation stage. It is possible to mix sets of RRs retrieved from multiple serves for a validation process. The DID document of `did:dnssec` consists of a RR set required to verify subject RR, a typed value resolved from FQDN. The DID document is fully verifiable by following the chain of trust starting from DNS root zone public keys, which are statically preconfigured as the trust anchor in the verification library, which is common among typical DNS resolver implementations.
 
 This proposal describes the list of design decisions needed and presents the necessary actions to design and implement `did:dnssec`.
 
-Note: The author of this proposal demonstrated the use of DNSSEC Resource Records in a similar way in a paper [@PKBADHOC].
+Note: The author of this proposal demonstrated the use of DNSSEC Resource Records similarly in a paper [@PKBADHOC].
 
 # Key Ideas
 
