@@ -73,7 +73,7 @@ Note: The author of this proposal demonstrated the use of DNSSEC Resource Record
 - Implement `did:dnssec` DID document verification library
 - Implement `did:dnssec` resolver
 
-Note: the author of this proposal has implemented the part of library code in C++, which is the part of the iOS application code prepared for the experiment of [@PKB-ADHOC]. The author is currently actively translating (and also refactor at the same time) the code as libraries in TypeScript language.
+Note: the author of this proposal has implemented the part of library code in C++, which is the part of the iOS application code prepared for the experiment of [@PKB-ADHOC]. The author is currently actively translating and refactoring the code as libraries in TypeScript language.
 
 # Deliverables
 
