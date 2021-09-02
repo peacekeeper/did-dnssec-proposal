@@ -6,6 +6,7 @@ category = "info"
 ipr = "none"
 workgroup="Proposal"
 keyword = ["did", "dns", "dnssec", "verifiable data registry"]
+submissionType="independent"
 
 [seriesInfo]
 name = "Internet-Draft"
@@ -28,6 +29,9 @@ organization = "Graduate School of Media and Governance, Keio University"
 .# Abstract
 
 This document proposes a new DID method, `did:dnssec`, which uses DNSSEC Resources Records as the basis for its Verifiable Data Registry. This document also describes the expected activities relates to the design and implementation of the DID method.
+
+.# Copyright Notice
+Copyright (c) 2021 Keio University and the persons identified as the document authors. All rights reserved.
 
 {mainmatter}
 
@@ -55,10 +59,8 @@ Note: The author of this proposal demonstrated the use of DNSSEC Resource Record
   - Resolver collects and returns all of the RRs require to verify the entire chain of trust for an RRset
   - Resolver is also able to provide individual RRset if necessary
   - Since the target of signing, which is the wire-format of RRset, is already in a canonical form, the values in DID document is mere a text converted wire-format values
-- Verifier may verify the validity of the given RRs.
- Ultimately, it makes sure of the value of the RR for an FQDN
-- By using DNS query over TCP [@RFC7766], the entire process can be
- implemented in a browser
+- Verifier can verify the validity of the subject RRset referred by the FQDN
+- By using DNS query over TCP [@RFC7766], the entire process can be implemented in a browser
 
 # Actions
 
@@ -118,7 +120,7 @@ This document has no IANA actions.
 
 <reference anchor='DID-CORE' target='https://www.w3.org/TR/2021/PR-did-core-20210803/'>
     <front>
-        <title>Decentralized Identifiers (DIDs) v1.0 -- Core architecture, data model, and representations (W3C Proposed Recommendation)</title>
+        <title>Decentralized Identifiers (DIDs) v1.0 - Core architecture, data model, and representations (W3C Proposed Recommendation)</title>
         <author initials='M.' surname='Sporny' fullname='Manu Sporny' role='editor'>
             <organization>Digital Bazaar</organization>
         </author>
