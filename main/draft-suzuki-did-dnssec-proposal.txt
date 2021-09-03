@@ -1,0 +1,221 @@
+
+
+
+
+Proposal                                                       S. Suzuki
+                                                         Keio University
+                                                        3 September 2021
+
+
+ Proposal on the Design and Implementation of a DID method over DNSSEC
+                              (did:dnssec)
+
+Abstract
+
+   We propose a new DID method, "did:dnssec", which uses DNSSEC
+   Resources Records as the basis for its Verifiable Data Registry.
+   This document describes background information, key ideas, and
+   planned activities related to the DID method's design and
+   implementation.
+
+Copyright Notice
+
+   Copyright (c) 2021 Keio University and the persons identified as the
+   document authors.  All rights reserved.
+
+Table of Contents
+
+   1.  Introduction
+   2.  Key Ideas
+   3.  Actions
+   4.  Deliverables
+     4.1.  Specifications
+     4.2.  Implementations
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  Informative References
+   Author's Address
+
+1.  Introduction
+
+   Decentralized Identifier (DID)[DID-CORE] is a technology for
+   implementing verifiable identifiers in a decentralized manner.  It
+   can be implemented in a way that eliminates dependence on other
+   entities, also able to materialize a Self-Sovereign Identity (SSI).
+   By applying blockchain technology, a fully decentralized identity is
+   possible.  Because of its decentralization focusing design, there is
+   a clear distinction from the centralized or hierarchical control
+   delegation mechanisms often used in the current Internet.
+
+   While we anticipate broad deployments of applications using DID in
+   the future, deployment often requires dependence on existing
+   distributed systems such as Domain Name Systems (DNS).  For example,
+   "did:web" [DID-WEB] depends on DNS.  Also, some DID method
+   implementation indirectly depends on DNS, i.e., to reach the service
+   described in DID documents as service endpoints.
+
+   The new "did:dnssec" method uses DNS Resource Records (DNS
+   RRs)[RFC1035] and DNSSEC Resource Records (DNSSEC RRs)[RFC4034] as a
+   Verifiable Data Registry (VDR) to eliminate the gap between the
+   existing Internet world and the new DID world.  Using DNS RRs and
+   DNSSEC RRs as a VDR (DNSSEC VDR hereafter) and applying the signature
+   verification mechanism in DNSSEC enable establishing the chain of
+   trust of a Fully Qualified Domain Name (FQDN) through multiple DNS
+   zones.  Using locally verifiable FQDN to RR mapping can eliminate
+   external entity dependencies in DID documents such as DNS resolver
+   dependency in "did:web", if the cost of local validation is
+   acceptable.
+
+   Access to DNSSEC VDRs is possible via the currently available DNS
+   transport mechanisms.  Since browsers can now access DNS servers via
+   TCP[RFC7766], the whole process, including RR retrieval and RR set
+   validation, can be completed within the browser.  Also, since the
+   DNSSEC VDR only depends on already deployed DNS servers, there are
+   numerous advantages over blockchain-based VDR implementations, such
+   as: extremely high availability, a wide range of implementation, a
+   long list of experienced operators, rich operational experiences, and
+   so on.
+
+   Furthermore, since DNSSEC is designed to work without transport
+   security, successful validation is guaranteed as long as the
+   necessary RR sets are available at the validation stage.  It is
+   possible to mix sets of RRs retrieved from multiple servers for a
+   validation process.  The DID document of "did:dnssec" consists of the
+   subject FQDN and a set of RRsets required to verify the subject RR.
+   The DID document is fully verifiable by following the chain of trust
+   starting from the DNSSEC trust anchor (public keys which bound to the
+   root zone key signing keys), which are statically preconfigured as
+   the trust anchor in the verification library, which is common among
+   typical DNS resolver implementations.
+
+   This proposal describes the list of design decisions needed and
+   presents the necessary actions to design and implement "did:dnssec".
+
+   Note: The author of this proposal demonstrated the use of DNSSEC
+   Resource Records similarly in a paper [PKB-ADHOC].
+
+2.  Key Ideas
+
+   *  Treat DNS/DNSSEC RRs in the DNS zones as a Verifiable Data
+      Registry
+
+      -  A VDR with the same control and hierarchical delegation policy
+         as DNS
+
+   *  DID resolver returns a set of RRs for a given DID as a DID
+      document
+
+      -  Resolver collects and returns all of the RRs require to verify
+         the entire chain of trust for an RRset
+
+      -  Resolver is also able to provide individual RRset if necessary
+
+      -  Since the target of signing, which is the wire-format of RRset,
+         is already in a canonical form, the values in DID document is
+         mere a text converted wire-format values
+
+   *  Verifier can verify the validity of the subject RRset referred by
+      the FQDN
+
+   *  Using DNS query over TCP [RFC7766] makes the entire process
+      possible to complete within a browser
+
+3.  Actions
+
+   *  Obtain method-id "dnssec" by registering "did:dnssec" to the DID
+      Spec Registry
+
+   *  Decides on the patterns of "did:dnssec" DID to express query
+      options
+
+   *  Develop DNSSEC RRSIG Resource Record Signature Format
+
+   *  Develop DID document format of "did:dnssec"
+
+   *  Write the specification on DNSSEC RRSIG Resource Record Signature
+      Format
+
+   *  Write the "did:dnssec" specification
+
+   *  Implement "did:dnssec" DID document verification library
+
+   *  Implement "did:dnssec" resolver
+
+   Note: the author of this proposal has implemented the part of library
+   code in C++, which is the part of the iOS application code prepared
+   for the experiment of [PKB-ADHOC].  The author is currently actively
+   translating and refactoring the code as libraries in TypeScript
+   language.
+
+4.  Deliverables
+
+4.1.  Specifications
+
+   *  DNSSEC RRSIG RR Verification Signature Format ("DNSSECRR")
+
+   *  "did:dnssec" specification
+
+4.2.  Implementations
+
+   *  DNS Resource Record handling library
+
+      -  Includes DNS resolver stub library using TCP for Web Browser
+
+   *  DNSSEC Resource Record handling library
+
+      -  Includes DNSSEC Resource Record signing and verification
+         library
+
+   *  DNSSEC DID Resolver implementation ("did-dnssec-resolver")
+
+      -  Includes example application code
+
+5.  Security Considerations
+
+   To be discussed
+
+6.  IANA Considerations
+
+   This document has no IANA actions.
+
+7.  Informative References
+
+   [RFC4034]  Arends, R., Austein, R., Larson, M., Massey, D., and S.
+              Rose, "Resource Records for the DNS Security Extensions",
+              RFC 4034, DOI 10.17487/RFC4034, March 2005,
+              <https://www.rfc-editor.org/info/rfc4034>.
+
+   [RFC7766]  Dickinson, J., Dickinson, S., Bellis, R., Mankin, A., and
+              D. Wessels, "DNS Transport over TCP - Implementation
+              Requirements", RFC 7766, DOI 10.17487/RFC7766, March 2016,
+              <https://www.rfc-editor.org/info/rfc7766>.
+
+   [PKB-ADHOC]
+              Suzuki, S., Ishihara, T., Manning, B., and J. Murai,
+              "Public Key based Authentication Scheme for Ad-hoc Network
+              Nodes Using DNSSEC Resource Records", 2012,
+              <https://ci.nii.ac.jp/naid/110008736794>.
+
+   [DID-CORE] Sporny, M., Ed., Guy, A., Ed., Sabadello, M., Ed., Reed,
+              D., Ed., Sporny, M., Longley, D., Sabadello, M., Reed, D.,
+              Steele, O., and C. Allen, "Decentralized Identifiers
+              (DIDs) v1.0 - Core architecture, data model, and
+              representations (W3C Proposed Recommendation)", August
+              2021, <https://www.w3.org/TR/2021/PR-did-core-20210803/>.
+
+   [DID-WEB]  Prorock, M., Ed., Steele, O., Ed., Terbu, O., Ed.,
+              Christian, C., Prorock, M., Steele, O., Terbu, O., Mike,
+              M., and D. Dmitri, "did:web Method Specification - Draft
+              Community Group Report 26 July 2021", June 2021,
+              <https://w3c-ccg.github.io/did-method-web/>.
+
+   [RFC1035]  Mockapetris, P., "Domain names - implementation and
+              specification", STD 13, RFC 1035, DOI 10.17487/RFC1035,
+              November 1987, <https://www.rfc-editor.org/info/rfc1035>.
+
+Author's Address
+
+   Shigeya Suzuki
+   Keio University
+
+   Email: shigeya@wide.ad.jp
